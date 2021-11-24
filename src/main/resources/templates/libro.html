@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://wwww.thymeleaf.org">
+    <head>
+        <title>BibliotecAPP</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link th:href="@{/css/styles.css}" rel="stylesheet" type="text/css"/>    
+    </head>
+    <body>
+        <header th:replace="fragmento.html :: header"></header>
+        <div th:replace="fragmento.html :: alerts"></div>  
+        <h2 class="title">Libros</h2>
+        <div th:if="${libros.isEmpty()}" class="container-mge">
+             <h3>No hay libros cargados</h3>
+        </div>
+        
+            <div class="table" th:unless="${libros.isEmpty()}">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">isbn</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Año</th>
+                            <th scope="col">Copias</th>
+                            <th scope="col">Copias prestados</th>
+                            <th scope="col">Copias restantes</th>
+                            <th scope="col">Alta/Baja</th>
+                            <th scope="col">Autor</th>
+                            <th scope="col">Editorial</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="libro:${libros}">
+                            <td th:text="${libro.isBn}"></td>
+                            <td th:text="${libro.title}"></td>
+                            <td th:text="${libro.year}"></td>
+                            <td th:text="${libro.copies}"></td>
+                            <td th:text="${libro.copiesOnLoan}"></td>
+                            <td th:text="${libro.remainingCopies}"></td>
+                            <td>
+                                <button th:if="${libro.high}" class="btn btn-success"></button>
+                                <button th:unless="${libro.high}" class="btn btn-danger"></button>
+                            </td>
+                            <td th:text="${libro.author.name}"></td>
+                            <td th:text="${libro.e.name}"></td>
+                            <td><a class="btn btn-light" th:href="@{/libro/modificar/__${libro.isBn}__}">Editar</a></td>
+                            <td><a class="btn btn-danger" th:href="@{/libro/eliminar/__${libro.isBn}__}">Eliminar</a></td>
+                            <td>
+                                <a th:if="${libro.high}" th:href="@{/libro/baja/__${libro.isBn}__}" class="btn-baja-alta" th:text="Baja"></a>                                   
+                                <a th:unless="${libro.high}" th:href="@{/libro/alta/__${libro.isBn}__}" class="btn-baja-alta" th:text="Alta"></a>
+                            </td> 
+                        </tr>
+                    </tbody>
+                </table>   
+            </div>
+            <a class="btn-add" th:href="@{/libro/crear}">Agregar</a>
+        
+        
+        <footer th:replace="fragmento.html :: footer"></footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    </body>
+</html>
